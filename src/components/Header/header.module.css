@@ -1,0 +1,46 @@
+.header {
+    text-align: justify;
+    letter-spacing: 1px;
+    height: 8em;
+    padding: 2em 10%;
+    background: #2c3e50;
+    color: #fff;
+    display: flex;
+    font-family: cursive;
+}
+
+    .header .logo_block {
+        display: flex;
+        margin: auto 0;
+    }
+
+        .header .logo_block .logo {
+            overflow: hidden;
+            display: inline-block;
+        }
+
+            .logo img {
+                width: 50px;
+                height: auto;
+            }
+
+        .header .logo_block h1 {
+            margin-left: 10px;
+        }
+    
+    .header ul {
+        display: flex;
+        width: 800px;
+        margin: 50px auto 10px;
+        justify-content: flex-end;
+    }
+
+a {
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+    white-space: nowrap;
+    padding: 10px 30px;
+    color: #fff;
+  }
