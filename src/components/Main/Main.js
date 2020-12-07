@@ -1,12 +1,16 @@
 import React from 'react';
 import styles from './main.module.css'; 
+import ThemeContext from "../../utils/ThemeContext";
 
 const blocks = ["С вашим текстом", "Для него", "Для неё"];
 
 const Main = () => {
+    const { theme, toggleTheme } = React.useContext(ThemeContext);
     const [activeBlock, setActiveBlock] = React.useState("С вашим текстом");
+    const light = { color: 'black' };
+    const dark = { color: 'white' };
     return (
-        <div className={styles.main}>
+        <div className={styles.main} style={theme === "light" ? light : dark}>
             <ul>
                 {blocks.map((block) => (
                     <li onClick={() => setActiveBlock(block)} className={activeBlock === block ? styles.choose : styles.li}>{block}</li>

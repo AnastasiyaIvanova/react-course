@@ -1,8 +1,22 @@
 import React from 'react';
 import logo from "../../img/logo.png";
 import styles from './header.module.css'; 
+import { Link } from "react-router-dom";
+import ThemeContext from "../../utils/ThemeContext";
+
+const sections = [
+    { title: 'Что подарить?', href: '/what' },
+    { title: 'Как купить', href: '/how' },
+    { title: 'Доставка', href: '/deliver' }
+  ];
 
 const Header = () => {
+    const { theme, toggleTheme } = React.useContext(ThemeContext);
+    const style = {
+        display: 'contents',
+        color: 'white',
+        cursor: 'pointer'
+    };
     return (
         <div className={styles.header}>
             <div className={styles.logo_block}>
@@ -10,10 +24,15 @@ const Header = () => {
                 <h1>GiftsStore</h1>
             </div>
             <ul>
-                <li><a href='#'>Что подарить?</a></li>
-                <li><a href='#'>Как купить</a></li>
-                <li><a href='#'>Доставка</a></li>
+                {sections.map (({ title, href }) => (
+                    <Link to={href}>
+                        <span>{title}</span>
+                    </Link>
+                ))}
             </ul>
+            <button onClick={toggleTheme} style={style}>
+                Сменить тему
+            </button>
         </div>
     )
 }
