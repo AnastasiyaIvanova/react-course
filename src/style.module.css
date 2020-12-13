@@ -1,18 +1,23 @@
 body {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
 }
 
 ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .wrapper {
-    min-height: 100vh;
-    /* background-color: aliceblue */
+  min-height: 100vh;
+  /* background-color: aliceblue */
+}
+
+.app {
+  display: flex;
+  justify-content: space-between;
 }

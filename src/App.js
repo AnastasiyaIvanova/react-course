@@ -1,42 +1,131 @@
-import React from 'react';
-import styles from './style.module.css'; 
-import Header from './components/Header';
-import Main from './components/Main';
-import Basket from './components/Basket';
+import React, { Component } from "react";
+import styles from "./style.module.css";
+import Header from "./components/Header";
+import Main from "./components/Main";
 import ThemeContext from "./utils/ThemeContext";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { gifts } from "./gifts";
 
-function App() {
+const updateGiftList = (basketList, newGift, index) => {
+  if (newGift.count === 0) {
+    return [...basketList.slice(0, index), ...basketList.slice(index + 1)];
+  }
 
-    const [theme, setTheme] = React.useState("light");
+  if (index === -1) {
+    return [...basketList, newGift];
+  }
 
+  return [...basketList.slice(0, index), newGift, ...basketList.slice(index + 1)];
+};
+
+const updateGift = (getGift, giftInCart, quantity) => {
+  if (giftInCart) {
+    return {
+      ...giftInCart,
+      price: giftInCart.price + quantity * getGift.price,
+      count: giftInCart.count + quantity,
+    };
+  }
+
+  return {
+    id: getGift.id,
+    name: getGift.name,
+    giftImage: getGift.giftImage,
+    price: getGift.price,
+    count: 1,
+  };
+};
+
+class App extends Component {
+  state = {
+    basketList: [],
+    theme: "light",
+  };
+
+  addGiftInBasket = (id) => {
+    const { basketList } = this.state;
+
+    this.setState(() => {
+      const getGift = gifts.find((gift) => gift.id === id);
+      const getGiftIndex = basketList.findIndex((gift) => gift.id === id);
+      const giftInCart = basketList[getGiftIndex];
+
+      const newGift = updateGift(getGift, giftInCart, 1);
+      const newArray = updateGiftList(basketList, newGift, getGiftIndex);
+
+      return {
+        basketList: newArray,
+      };
+    });
+  };
+
+  removeGiftFromBasket = (id) => {
+    const { basketList } = this.state;
+
+    this.setState(() => {
+      const getGift = gifts.find((gift) => gift.id === id);
+      const getGiftIndex = basketList.findIndex((gift) => gift.id === id);
+      const giftInCart = basketList[getGiftIndex];
+
+      const newGift = updateGift(getGift, giftInCart, -1);
+      const newArray = updateGiftList(basketList, newGift, getGiftIndex);
+
+      return {
+        basketList: newArray
+      };
+    });
+  };
+
+  deletePurchasedGift = (id) => {
+    const { basketList } = this.state;
+
+    this.setState(() => {
+      const getGift = gifts.find((gift) => gift.id === id);
+      const getGiftIndex = basketList.findIndex((gift) => gift.id === id);
+      const giftInCart = basketList[getGiftIndex];
+
+      const newGift = updateGift(getGift, giftInCart, -giftInCart.count);
+      const newArray = updateGiftList(basketList, newGift, getGiftIndex);
+
+      return {
+        basketList: newArray
+      };
+    });
+  };
+  render() {
     const toggleTheme = () => {
-      if (theme === "light") {
-        setTheme("dark");
+      if (this.state.theme === "light") {
+        this.setState({ theme: "dark" });
         return;
       }
 
-      setTheme("light");
+      this.setState({ theme: "light" });
     };
-    const light = { backgroundColor: 'aliceblue' };
-    const dark = { backgroundColor: '#003139'};
+    const light = { backgroundColor: "aliceblue" };
+    const dark = { backgroundColor: "#003139" };
+    const theme = this.state.theme;
     return (
       <BrowserRouter>
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
           <div className="App">
-            <div className={styles.wrapper} style={theme === "light" ? light : dark}>
+            <div
+              className={styles.wrapper}
+              style={theme === "light" ? light : dark}
+            >
               <Header />
-              <Switch>
-                <Route path='/main' component={Main} />
-                <Route path='/basket' component={Basket} />
-                <Redirect from='/' to='/main'/>
-              </Switch>
+              <Main 
+                gifts={gifts} 
+                addGiftInBasket={this.addGiftInBasket} 
+                basketList={this.state.basketList} 
+                removeGiftFromBasket={this.removeGiftFromBasket}
+                deletePurchasedGift={this.deletePurchasedGift} 
+              />
             </div>
           </div>
         </ThemeContext.Provider>
       </BrowserRouter>
-        
     );
+  }
 }
 
 export default App;
