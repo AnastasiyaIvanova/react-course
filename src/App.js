@@ -6,10 +6,25 @@ import ThemeContext from "./utils/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
 import { gifts } from "./gifts";
 import { Provider as StoreProvider } from "react-redux";
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './store';
 
-const store = createStore(rootReducer)
+
+const logger = (store) => (next) => (action) => {
+  const { type, ...restPayload } = action;
+  console.log({ type, payload: restPayload });
+  return next(action);
+};
+
+const logger2 = (store) => (next) => (action) => {
+  console.log("Второй лог");
+  return next(action);
+};
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(logger, logger2)
+);
 
 const updateGiftList = (basketList, newGift, index) => {
   if (newGift.count === 0) {
