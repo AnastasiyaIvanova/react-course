@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from '../Main/main.module.css'; 
+import { useDispatch } from "react-redux";
 
 const BasketListItem = ({ basket, addGiftInBasket, removeGiftFromBasket, deletePurchasedGift }) => {
   const {  name, price, giftImage, count, id } = basket;
-  console.log(giftImage);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -11,11 +12,11 @@ const BasketListItem = ({ basket, addGiftInBasket, removeGiftFromBasket, deleteP
         <p>{name}</p>
       <h3>Цена: {price}</h3>
       <div style={{marginBottom:"10px"}}>
-        <button className={styles.button_basket} onClick={() => addGiftInBasket(id)}>+</button>
+        <button className={styles.button_basket} onClick={() => dispatch(addGiftInBasket(id))}>+</button>
         <span>{count}</span>
-        <button className={styles.button_basket} onClick={() => removeGiftFromBasket(id)}>-</button>
+        <button className={styles.button_basket} onClick={() => dispatch(removeGiftFromBasket(id))}>-</button>
       </div>
-      <button className="cart-list-item__delete" onClick={() => deletePurchasedGift(id)}>Удалить</button>
+      <button className="cart-list-item__delete" onClick={() => dispatch(deletePurchasedGift(id))}>Удалить</button>
     </div>
   )
 };

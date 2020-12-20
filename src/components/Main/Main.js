@@ -7,13 +7,20 @@ import BasketList from "../BasketList";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getActiveBlock, getBlocks } from "../../store/block/selectors";
+import { getGifts, getBasketList } from "../../store/gift/selectors";
 import { changeActiveBlock } from "../../store/block/actions";
+import { addGiftInBasket, removeGiftFromBasket, deletePurchasedGift } from "../../store/gift/actions";
 
-const Main = ({ gifts, addGiftInBasket, basketList, deletePurchasedGift, removeGiftFromBasket }) => {
+const Main = () => {
   const { theme, toggleTheme } = React.useContext(ThemeContext);
   const blocks = useSelector(getBlocks);
   const activeBlock = useSelector(getActiveBlock);
+
+  const gifts = useSelector(getGifts);
+  const basketList = useSelector(getBasketList);
+
   const dispatch = useDispatch();
+  
   const light = { color: "black" };
   const dark = { color: "white" };
   return (

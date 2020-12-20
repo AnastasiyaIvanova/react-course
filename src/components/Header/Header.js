@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import ThemeContext from "../../utils/ThemeContext";
 
 const sections = [
-  { title: 'Что подарить?', href: '/what' },
+  { title: 'Главная', href: '/' },
   { title: 'Как купить', href: '/how' },
   { title: 'Доставка', href: '/deliver' },
   { title: 'Корзина', href: '/basket-list' }
