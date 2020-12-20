@@ -4,12 +4,16 @@ import ThemeContext from "../../utils/ThemeContext";
 import { Route } from "react-router-dom";
 import ShopList from "../ShopList";
 import BasketList from "../BasketList";
+import { useDispatch, useSelector } from "react-redux";
 
-const blocks = ["С вашим текстом", "Для него", "Для неё"];
+import { getActiveBlock, getBlocks } from "../../store/block/selectors";
+import { changeActiveBlock } from "../../store/block/actions";
 
 const Main = ({ gifts, addGiftInBasket, basketList, deletePurchasedGift, removeGiftFromBasket }) => {
   const { theme, toggleTheme } = React.useContext(ThemeContext);
-  const [activeBlock, setActiveBlock] = React.useState("С вашим текстом");
+  const blocks = useSelector(getBlocks);
+  const activeBlock = useSelector(getActiveBlock);
+  const dispatch = useDispatch();
   const light = { color: "black" };
   const dark = { color: "white" };
   return (
@@ -23,7 +27,7 @@ const Main = ({ gifts, addGiftInBasket, basketList, deletePurchasedGift, removeG
               <ul>
                 {blocks.map((block) => (
                   <li
-                    onClick={() => setActiveBlock(block)}
+                    onClick={() => dispatch(changeActiveBlock(block))}
                     className={
                       activeBlock === block ? styles.choose : styles.li
                     }

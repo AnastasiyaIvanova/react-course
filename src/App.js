@@ -5,6 +5,11 @@ import Main from "./components/Main";
 import ThemeContext from "./utils/ThemeContext";
 import { BrowserRouter } from "react-router-dom";
 import { gifts } from "./gifts";
+import { Provider as StoreProvider } from "react-redux";
+import { createStore } from 'redux';
+import rootReducer from './store';
+
+const store = createStore(rootReducer)
 
 const updateGiftList = (basketList, newGift, index) => {
   if (newGift.count === 0) {
@@ -106,23 +111,25 @@ class App extends Component {
     const theme = this.state.theme;
     return (
       <BrowserRouter>
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
-          <div className="App">
-            <div
-              className={styles.wrapper}
-              style={theme === "light" ? light : dark}
-            >
-              <Header />
-              <Main 
-                gifts={gifts} 
-                addGiftInBasket={this.addGiftInBasket} 
-                basketList={this.state.basketList} 
-                removeGiftFromBasket={this.removeGiftFromBasket}
-                deletePurchasedGift={this.deletePurchasedGift} 
-              />
+        <StoreProvider store={store}>
+          <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <div className="App">
+              <div
+                className={styles.wrapper}
+                style={theme === "light" ? light : dark}
+              >
+                <Header />
+                <Main 
+                  gifts={gifts} 
+                  addGiftInBasket={this.addGiftInBasket} 
+                  basketList={this.state.basketList} 
+                  removeGiftFromBasket={this.removeGiftFromBasket}
+                  deletePurchasedGift={this.deletePurchasedGift} 
+                />
+              </div>
             </div>
-          </div>
-        </ThemeContext.Provider>
+          </ThemeContext.Provider>
+        </StoreProvider>
       </BrowserRouter>
     );
   }
